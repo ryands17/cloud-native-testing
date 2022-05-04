@@ -8,7 +8,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
+    "test:cloud": "dotenv -- jest --config ./integration/jest.config.js",
     "cdk": "cdk",
+    "deploy:ci": "yarn cdk deploy --require-approval=never",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -16,6 +18,7 @@
     "@types/jest": "^27.5.0",
     "@types/node": "17.0.31",
     "aws-cdk": "2.22.0",
+    "dotenv-cli": "5.1.0",
     "esbuild": "0.14.38",
     "husky": ">=6",
     "jest": "^28.0.3",
@@ -29,6 +32,7 @@
     "@aws-cdk/aws-apigatewayv2-alpha": "2.22.0-alpha.0",
     "@aws-cdk/aws-apigatewayv2-integrations-alpha": "2.22.0-alpha.0",
     "aws-cdk-lib": "2.22.0",
+    "axios": "^0.27.2",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.16"
   },

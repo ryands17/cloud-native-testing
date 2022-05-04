@@ -2,15 +2,15 @@ import * as cdk from 'aws-cdk-lib'
 import { Construct } from 'constructs'
 import * as api from '@aws-cdk/aws-apigatewayv2-alpha'
 import * as apiIntegration from '@aws-cdk/aws-apigatewayv2-integrations-alpha'
-import * as ln from 'aws-cdk-lib/aws-lambda-nodejs'
+import { apiHandler, testHandler } from './utils'
 
 export class CloudNativeTestingStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
 
     // API endpoint
-    const httpApi = new api.HttpApi(this, 'http-api-example', {
-      description: 'HTTP API example',
+    const httpApi = new api.HttpApi(this, 'http-api', {
+      description: 'HTTP API',
       corsPreflight: {
         allowHeaders: [
           'Content-Type',
@@ -23,13 +23,8 @@ export class CloudNativeTestingStack extends cdk.Stack {
       },
     })
 
-    const api1 = new ln.NodejsFunction(this, 'api-1', {
-      entry: 'functions/api1.ts',
-    })
-
-    const api2 = new ln.NodejsFunction(this, 'api-2', {
-      entry: 'functions/api2.ts',
-    })
+    const api1 = apiHandler(this, 'api1')
+    const api2 = apiHandler(this, 'api2')
 
     httpApi.addRoutes({
       path: '/',
@@ -47,6 +42,14 @@ export class CloudNativeTestingStack extends cdk.Stack {
         'api2-integration',
         api2.currentVersion
       ),
+    })
+
+    testHandler('api1', this, 'test-handler', {
+      environment: { API_URL: httpApi.url! },
+    })
+
+    testHandler('api2', this, 'test-handler', {
+      environment: { API_URL: httpApi.url! },
     })
 
     new cdk.CfnOutput(this, 'api-url', { value: httpApi.url! })
