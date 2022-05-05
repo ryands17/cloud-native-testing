@@ -2,11 +2,13 @@ import * as cdk from 'aws-cdk-lib'
 import * as logs from 'aws-cdk-lib/aws-logs'
 import * as ln from 'aws-cdk-lib/aws-lambda-nodejs'
 
-export const apiHandler = (
+export const lambdaHandler = (
   ...args: ConstructorParameters<typeof ln.NodejsFunction>
 ) =>
   new ln.NodejsFunction(args[0], args[1], {
     entry: `functions/${args[1]}.ts`,
+    memorySize: 256,
+    timeout: cdk.Duration.seconds(10),
     logRetention: logs.RetentionDays.ONE_DAY,
     ...args[2],
   })
@@ -16,9 +18,9 @@ export const testHandler = (
   ...args: ConstructorParameters<typeof ln.NodejsFunction>
 ) =>
   new ln.NodejsFunction(args[0], args[1], {
-    entry: `integration/${args[1]}.ts`,
+    entry: `integration/test-handler.ts`,
     memorySize: 1024,
-    timeout: cdk.Duration.seconds(10),
+    timeout: cdk.Duration.seconds(20),
     logRetention: logs.RetentionDays.ONE_DAY,
     bundling: {
       nodeModules: ['typescript', '@types/jest', 'jest', 'ts-jest', 'axios'],

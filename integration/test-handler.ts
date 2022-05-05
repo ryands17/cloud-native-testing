@@ -7,5 +7,5 @@ export const handler = async () => {
     (res) => `${res.title} - ${res.status.toUpperCase()}`
   )
 
-  console.log(result)
+  return result
 }
