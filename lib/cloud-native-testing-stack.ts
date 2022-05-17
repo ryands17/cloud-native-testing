@@ -76,6 +76,6 @@ export class CloudNativeTestingStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(5),
     })
 
-    new cdk.CfnOutput(this, 'api-url', { value: httpApi.url! })
+    new cdk.CfnOutput(this, 'apiURL', { value: httpApi.url! })
   }
 }

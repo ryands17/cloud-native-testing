@@ -10,7 +10,9 @@
     "test": "jest",
     "test:cloud": "dotenv -- jest --config ./integration/jest.config.js",
     "cdk": "cdk",
-    "deploy:ci": "yarn cdk deploy --require-approval=never",
+    "deploy:ci": "cdk deploy \"CloudNativeTestingStack-${STAGE}\" --require-approval=never -O cdk.output.json",
+    "postdeploy:ci": "node --eval \"console.log('::set-output name=api_url::' + require('./cdk.output.json')['CloudNativeTestingStack-${STAGE}'].apiURL)\"",
+    "destroy:ci": "cdk destroy \"CloudNativeTestingStack-${STAGE}\" --force",
     "prepare": "husky install"
   },
   "devDependencies": {

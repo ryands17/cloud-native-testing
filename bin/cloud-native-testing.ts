@@ -4,6 +4,8 @@ import * as cdk from 'aws-cdk-lib'
 import { CloudNativeTestingStack } from '../lib/cloud-native-testing-stack'
 
 const app = new cdk.App()
-new CloudNativeTestingStack(app, 'CloudNativeTestingStack', {
+const stackName = `CloudNativeTestingStack-${process.env.GH_PR || ''}`
+
+new CloudNativeTestingStack(app, stackName, {
   env: { region: app.node.tryGetContext('region') || 'us-east-2' },
 })
