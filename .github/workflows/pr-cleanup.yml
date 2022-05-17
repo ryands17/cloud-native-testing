@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
       AWS_WEB_IDENTITY_TOKEN_FILE: '/tmp/awscreds'
       AWS_DEFAULT_REGION: us-east-2
       AWS_REGION: us-east-2
