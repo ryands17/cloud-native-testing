@@ -19,6 +19,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      deployments: write
 
     steps:
       - name: set STAGE variable in environment for next steps
