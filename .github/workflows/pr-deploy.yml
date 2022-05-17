@@ -77,7 +77,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $AWS_CREDS | jq -r '.Credentials.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $AWS_CREDS | jq -r '.Credentials.SessionToken')
 
-      - name: Deploy PR stack
+      - name: Deploy PR
         run: yarn deploy:ci
 
       - name: Update the deployment status
