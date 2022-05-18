@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: set STAGE variable in environment for next steps
-        run: echo "STAGE=${{ github.event.number }}-${{ github.ref_name }}" >> $GITHUB_ENV
+        run: echo "STAGE=${{ github.event.number }}-${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Create a deployment
         uses: bobheadxi/deployments@v1
