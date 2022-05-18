@@ -13,16 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
       AWS_WEB_IDENTITY_TOKEN_FILE: '/tmp/awscreds'
       AWS_DEFAULT_REGION: us-east-2
       AWS_REGION: us-east-2
     permissions:
       id-token: write
       contents: read
+      deployments: write
 
     steps:
       - name: set STAGE variable in environment for next steps
-        run: echo "STAGE=${{ github.event.number }}-${{ github.ref_name }}" >> $GITHUB_ENV
+        run: echo "STAGE=${{ github.event.number }}-${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Create a deployment
         uses: bobheadxi/deployments@v1
@@ -75,12 +77,12 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=$(echo $AWS_CREDS | jq -r '.Credentials.SecretAccessKey')
           export AWS_SESSION_TOKEN=$(echo $AWS_CREDS | jq -r '.Credentials.SessionToken')
 
-      - name: Deploy PR stack
+      - name: Deploy PR
+        id: cdk_deploy
         run: yarn deploy:ci
 
       - name: Update the deployment status
         uses: bobheadxi/deployments@v1
-        if: always()
         with:
           step: finish
           token: ${{ secrets.GITHUB_TOKEN }}

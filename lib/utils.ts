@@ -8,7 +8,7 @@ export const lambdaHandler = (
   new ln.NodejsFunction(args[0], args[1], {
     entry: `functions/${args[1]}.ts`,
     memorySize: 256,
-    timeout: cdk.Duration.seconds(10),
+    timeout: cdk.Duration.seconds(20),
     logRetention: logs.RetentionDays.ONE_DAY,
     ...args[2],
   })
