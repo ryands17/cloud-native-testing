@@ -78,6 +78,7 @@ jobs:
           export AWS_SESSION_TOKEN=$(echo $AWS_CREDS | jq -r '.Credentials.SessionToken')
 
       - name: Deploy PR
+        id: cdk_deploy
         run: yarn deploy:ci
 
       - name: Update the deployment status

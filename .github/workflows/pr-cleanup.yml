@@ -23,7 +23,9 @@ jobs:
 
     steps:
       - name: set STAGE variable in environment for next steps
-        run: echo "STAGE=${{ github.event.number }}-${{ github.ref_name }}" >> $GITHUB_ENV
+        run: |
+          echo "STAGE=${{ github.event.number }}-${{ github.ref_name }}" >> $GITHUB_ENV
+          echo "STAGE2=${{ github.event.number }}-${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -75,4 +77,12 @@ jobs:
           step: delete-env
           token: ${{ secrets.GITHUB_TOKEN }}
           env: ${{ env.STAGE }}
+          desc: Environment was pruned
+
+      - name: Delete the deployment and the corresponding environment
+        uses: bobheadxi/deployments@v1
+        with:
+          step: delete-env
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: ${{ env.STAGE2 }}
           desc: Environment was pruned
